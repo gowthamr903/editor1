@@ -1,0 +1,124 @@
+<div class="container-fluid">
+  <div class="row flex-nowrap">
+    <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
+      <div
+        class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100"
+      >
+        <a
+          href="/"
+          class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none"
+        >
+          <span class="fs-5 d-none d-sm-inline">Menu</span>
+        </a>
+
+        <div *ngFor="let item of currMaterialData">
+          <div
+            class="d-flex justify-content-center"
+            style="margin: 10px 0"
+            *ngIf="item.type === 'Color3'"
+          >
+            <div class="input-group">
+              <label> {{ item.name }}</label>
+              <input
+                type="color"
+                class="form-control form-control-color"
+                placeholder="Example input"
+                aria-label="Example input"
+                aria-describedby="button-addon1"
+                style="width: 28px; padding: 0; margin: -2px 10px"
+                [value]="item.value"
+                (input)="onInputColorChange($event, item)"
+              />
+              <!-- <button
+                class="btn btn-primary"
+                type="button"
+                id="button-addon1"
+                data-mdb-ripple-color="dark"
+              >
+                Button
+              </button> -->
+            </div>
+          </div>
+
+          <div
+            class="d-flex justify-content-center"
+            style="margin: 10px 0"
+            *ngIf="item.type === 'Texture'"
+          >
+            <div class="input-group">
+              <label> {{ item.name }}</label>
+              <img
+                [src]="item.value ? item.value : ''"
+                style="width: 20px; height: 20px; margin: 0 10px"
+                (click)="onAddTexture($event, item)"
+              />
+              <input
+                type="checkbox"
+                [checked]="item.isTextureEnabled ? true : false"
+                (change)="onToggleTexture($event, item)"
+              />
+            </div>
+          </div>
+
+          <!-- <div
+            class="d-flex justify-content-center"
+            style="margin: 10px 0"
+            *ngIf="item.type === 'Texture'"
+          >
+            <div class="input-group">
+              <label> Repeat</label>
+
+              <input
+                type="number"
+                class="form-control"
+                style="margin: 0 10px; background-color: black; color: white"
+                (input)="onInputNumberChange($event, item)"
+                *ngFor="let item of item.child"
+              />
+            </div>
+          </div> -->
+
+          <div
+            class="d-flex justify-content-center"
+            style="margin: 10px 0"
+            *ngIf="item.type === 'boolean'"
+          >
+            <div class="input-group">
+              <label>{{ item.name }} </label>
+
+              <input
+                type="checkbox"
+                style="margin: 0 10px"
+                [checked]="item.value"
+                (change)="onBooleanInputChange($event, item)"
+              />
+            </div>
+          </div>
+
+          <div
+            class="d-flex justify-content-center"
+            style="margin: 10px 0"
+            *ngIf="item.type === 'Number'"
+          >
+            <div class="input-group">
+              <label>{{ item.name }} </label>
+
+              <input
+                type="number"
+                class="form-control"
+                style="margin: 0 10px; background-color: black; color: white"
+                [value]="item.value"
+                (input)="onInputNumberChange($event, item)"
+              />
+            </div>
+          </div>
+        </div>
+
+        <hr />
+      </div>
+    </div>
+    <div class="col py-3">
+      <canvas #canvas></canvas>
+    </div>
+  </div>
+</div>
