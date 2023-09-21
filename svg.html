@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    <style>
+      body {
+        background-color: #ccc;
+      }
+
+      .line1,
+      .line2,
+      .line3,
+      .line4 {
+        stroke-dasharray: 2300;
+        stroke-dashoffset: 2300;
+        animation: dash 5s linear forwards;
+      }
+
+      @keyframes dash {
+        to {
+          stroke-dashoffset: 0;
+        }
+      }
+
+      .bg {
+        /* The image used */
+        background-image: url("circuit.png");
+
+        /* Full height */
+        height: 100vh;
+
+        /* Center and scale the image nicely */
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bg">
+      <button type="button" id="btnclick">Save points</button>
+      <button type="button" onclick="AddSvgtoScene()">loadPoints</button>
+      <p id="textpoints"></p>
+
+      <div class="stage" id="mouse-position-demo">
+        <div class="trace">
+          <span class="label">mouseX: </span
+          ><span class="value" id="mouse_x-trace">0</span>
+          <span class="label">mouseY: </span
+          ><span class="value" id="mouse_y-trace">0</span>
+        </div>
+        <div class="trace">
+          <span class="label">relMouseX: </span
+          ><span class="value" id="rel_mouse_x-trace">0</span>
+          <span class="label">relMouseY: </span
+          ><span class="value" id="rel_mouse_y-trace">0</span>
+        </div>
+      </div>
+
+      <div id="svglist">
+
+      </div>
+
+      <!-- <svg
+        version="1.1"
+        id="Layer_1"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        x="0px"
+        y="0px"
+        viewBox="0 0 1999.007 560"
+        style="enable-background: new 0 0 1999.007 560"
+        xml:space="preserve"
+      >
+        <path
+          class="line1"
+          style="
+            fill: none;
+            stroke: #ca3532;
+            stroke-width: 11;
+            stroke-miterlimit: 10;
+          "
+          d="M 5 245 l 450 0  l 420 3 l 0 250"
+        /> -->
+        <!-- <path
+        class="line2"
+        style="
+          fill: none;
+          stroke: #21aeb8;
+          stroke-width: 11;
+          stroke-miterlimit: 10;
+        "
+        d="M7.622,68.997
+c63.526,16.725,114.958,46.718,161.474,93.375c58.574,58.752,124.397,129.296,215.396,122.491
+c36.201-2.707,69.877-18.493,104.376-29.793c92.193-30.198,191.378-28.556,288.366-26.362
+c222.659,5.037,443.983,4.791,666.654,4.791c85.665,0,555.119,0,555.119,0"
+      /> -->
+        <!-- <path
+        class="line3"
+        style="
+          fill: none;
+          stroke: #62ab38;
+          stroke-width: 11;
+          stroke-miterlimit: 10;
+        "
+        d="M10.628,398.243
+c98.501,20.268,202.926,9.114,295.368-30.252c110.86-47.21,211.1-122.805,335.982-128.2c91.338-3.945,184.697,28.631,270.85,55.526
+c52.736,15.855,159.623,42.183,257.969,42.183s828.21,0,828.21,0"
+      /> -->
+        <!-- <path
+        class="line4"
+        style="
+          fill: none;
+          stroke: #70357b;
+          stroke-width: 11;
+          stroke-miterlimit: 10;
+        "
+        d="M3.753,344.931
+c0,0,260.692-109.142,307.727-118.406c47.035-9.264,132.368-18.393,195.794,3.404s243.095,67.78,340.015,64.93
+c96.92-2.851,204.513-72.49,236.582-89.594c32.069-17.104,65.547-14.766,143.225-14.766c77.679,0,771.911,0,771.911,0"
+      /> -->
+      </svg>
+    </div>
+
+    <script>
+      function printMousePos(event) {
+        console.log(
+          "clientX: " + event.clientX + " - clientY: " + event.clientY
+        );
+        // document
+        //   .getElementById("textpoints")
+        //   .innerText(
+        //     "clientX: " + event.clientX + " - clientY: " + event.clientY
+        //   );
+      }
+
+      document.addEventListener("click", printMousePos);
+
+      jQuery(document).ready(function ($) {
+        // store the initial offset of the "demo" div
+        offset = $("#mouse-position-demo").offset();
+      });
+
+      // track and save the position of the mouse
+      jQuery(document).mousemove(function (e) {
+        // get current mouse position
+        var mouseX = e.pageX;
+        var mouseY = e.pageY;
+        // position relative to the "demo" div
+        var relMouseX = mouseX - offset.left;
+        var relMouseY = mouseY - offset.top;
+        // display the position in the HTML
+        jQuery("#mouse_x-trace").text(mouseX);
+        jQuery("#mouse_y-trace").text(mouseY);
+        jQuery("#rel_mouse_x-trace").text(Math.round(relMouseX));
+        jQuery("#rel_mouse_y-trace").text(Math.round(relMouseY));
+      });
+
+
+      function AddSvgtoScene(){
+
+        let html=` <svg
+        version="1.1"
+        id="Layer_1"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        x="0px"
+        y="0px"
+        viewBox="0 0 1999.007 560"
+        style="enable-background: new 0 0 1999.007 560"
+        xml:space="preserve"
+      >
+        <path
+          class="line1"
+          style="
+            fill: none;
+            stroke: #ca3532;
+            stroke-width: 11;
+            stroke-miterlimit: 10;
+          "
+          d="M 5 245 l 450 0  l 420 3 l 0 270 l 150 0"
+        />`;
+
+
+        $('#svglist').append(html);
+
+       
+      }
+    </script>
+  </body>
+</html>
